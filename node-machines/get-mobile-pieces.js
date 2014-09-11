@@ -24,42 +24,33 @@ module.exports = {
     var numSquares = (boardSize * boardSize);
 
     // Get spaces that the player occupies
-    var tilesToCheck, valToCheck, spaces, playerPieces;
+    var tilesToCheck, spaces, playerPieces;
     if (!pieces) {
-      spaces = _.where(Object.keys(game.board), function(tile) {return game.board[tile] == '0';});
-      playerPieces = _.where(Object.keys(game.board), function(tile) {return game.board[tile] == player;});
+      tilesToCheck = _.where(Object.keys(game.board), function(tile) {return game.board[tile] == player;});
     } else {
-      spaces = pieces.space;
-      playerPieces = pieces['player'+player];
-    }
-    if (spaces.length > playerPieces.length) {
-      tilesToCheck = playerPieces;
-      valToCheck = 0;
-    } else {
-      tilesToCheck = spaces;
-      valToCheck = player;
+      tilesToCheck = pieces['player'+player];
     }
 
     var mobilePieces = _.without(_.map(tilesToCheck, function(tile) {
       var col = tile % boardSize;
       var row = Math.floor(tile / boardSize);
 
-      if (null !== getValidSpace(col - 1, row - 1, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col, row - 1, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col + 1, row - 1, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col - 1, row, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col + 1, row, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col - 1, row + 1, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col, row + 1, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col + 1, row + 1, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col - 2, row - 2, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col, row - 2, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col + 2, row - 2, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col - 2, row, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col + 2, row, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col - 2, row + 2, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col, row + 2, valToCheck)) {return tile;}
-      if (null !== getValidSpace(col + 2, row + 2, valToCheck)) {return tile;}
+      if (null !== getValidSpace(col - 1, row - 1)) {return tile;}
+      if (null !== getValidSpace(col, row - 1)) {return tile;}
+      if (null !== getValidSpace(col + 1, row - 1)) {return tile;}
+      if (null !== getValidSpace(col - 1, row)) {return tile;}
+      if (null !== getValidSpace(col + 1, row)) {return tile;}
+      if (null !== getValidSpace(col - 1, row + 1)) {return tile;}
+      if (null !== getValidSpace(col, row + 1)) {return tile;}
+      if (null !== getValidSpace(col + 1, row + 1)) {return tile;}
+      if (null !== getValidSpace(col - 2, row - 2)) {return tile;}
+      if (null !== getValidSpace(col, row - 2)) {return tile;}
+      if (null !== getValidSpace(col + 2, row - 2)) {return tile;}
+      if (null !== getValidSpace(col - 2, row)) {return tile;}
+      if (null !== getValidSpace(col + 2, row)) {return tile;}
+      if (null !== getValidSpace(col - 2, row + 2)) {return tile;}
+      if (null !== getValidSpace(col, row + 2)) {return tile;}
+      if (null !== getValidSpace(col + 2, row + 2)) {return tile;}
 
       return null;
 
