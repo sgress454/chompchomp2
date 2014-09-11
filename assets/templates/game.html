@@ -1,9 +1,12 @@
 <div>Player 1: {{game.player1.firstName}}</div>
 <div>Player 2: {{game.player2.firstName}}</div>
+<div>Turn: {{turn}}</div>
 
 <div class="board" style="width: {{game.boardSize * 50}}px; height: {{game.boardSize * 50}}px">
-  <div ng-repeat="tile in board track by $index" class="tile">
-    <div ng-if="tile" ng-class="{piece: true, player1: tile==1, player2: tile==2, mine: tile==player}"></div>
+  <div ng-repeat="tile in board track by $index" class="tile" ng-click="clickTile($index)">
+    <div ng-class="{highlight: true, mobile: isMobile($index), destination: isDestination($index), selected: $index==selectedTile}">
+      <div ng-class="{piece: true, player1: tile==1, player2: tile==2, mine: tile==player}"></div>
+    </div>
   </div>
 </div>
 

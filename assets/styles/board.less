@@ -7,6 +7,24 @@
     height: 50px;
     background: url(../images/tile.png);
     position: relative;
+    .highlight {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 50px;
+      height: 50px;
+      &.mobile:hover {
+        background: red;
+        cursor: pointer;
+      }
+      &.selected {
+        background: blue;
+      }
+      &.destination {
+        background: rgba(255,255,255,.5);
+        cursor: pointer;
+      }
+    }
     .piece {
       position: absolute;
       top: 0px;
