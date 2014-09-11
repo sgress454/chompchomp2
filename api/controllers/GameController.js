@@ -87,11 +87,8 @@ module.exports = {
                       winner: winner
                     }).exec(function(err) {
                       if (err) {return res.negotiate(err);}
-                      return res.ok({
-                        turn: turn,
-                        board: board,
-                        winner: winner
-                      });
+                      Game.message(id, _.extend({action: "move"}, result), req);
+                      return res.ok(result);
                     });
                   }
                });
