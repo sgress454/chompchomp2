@@ -4,7 +4,7 @@ var request = require('request');
 var j = request.jar();
 request = request.defaults({jar:j});
 
-describe.only('GameController.move()', function () {
+describe('GameController.move()', function () {
 
   var game, otherGame, player2TurnGame, player1, player2;
 
@@ -522,7 +522,6 @@ describe.only('GameController.move()', function () {
             request(opts, function(err, _res, _body) {
               res = _res;
               body = _body;
-              console.log(body);
               return done(err);
             });
 

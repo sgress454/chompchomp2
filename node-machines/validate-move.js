@@ -138,7 +138,7 @@ module.exports = {
         var getMobilePieces = Machine.build(require('./get-mobile-pieces.js'));
         getMobilePieces.configure({game: game, pieces: pieces, player: otherPlayer}).exec({
           success: function(mobilePieces) {
-            console.log(mobilePieces);
+
             if (mobilePieces.length) {
               winner = 0;
               turn = otherPlayer;
