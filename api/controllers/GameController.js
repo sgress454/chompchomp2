@@ -12,6 +12,10 @@ module.exports = {
 
     var data = _.pick(req.params.all(), ['public', 'boardSize', 'rules', 'invitee']);
 
+    if (!data.boardSize || isNaN(data.boardSize) || data.boardSize < 7) {
+      return res.badRequest('E_BAD_BOARDSIZE');
+    }
+
     data.player1 = req.session.user.id;
 
     Game.create(data, function(err, game) {
