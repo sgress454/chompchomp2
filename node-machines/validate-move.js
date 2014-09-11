@@ -94,7 +94,7 @@ module.exports = {
         game.board[from] = 0;
       }
 
-      var captureableSpaces = _.compact([
+      var captureableSpaces = _.without([
         getValidSpace(toCol - 1, toRow - 1, otherPlayer),
         getValidSpace(toCol, toRow - 1, otherPlayer),
         getValidSpace(toCol + 1, toRow - 1, otherPlayer),
@@ -103,7 +103,7 @@ module.exports = {
         getValidSpace(toCol - 1, toRow + 1, otherPlayer),
         getValidSpace(toCol, toRow + 1, otherPlayer),
         getValidSpace(toCol + 1, toRow + 1, otherPlayer),
-      ]);
+      ], null);
 
       // Change them all to be the player that moved
       _.each(captureableSpaces, function(space) {
@@ -150,7 +150,7 @@ module.exports = {
               winner = 0;
               turn = player;
             }
-            return $x.valid({board: game.board, winner: winner, turn: turn});
+            return $x.valid({board: game.board, captured: captureableSpaces, winner: winner, turn: turn});
           }
         });
       }
