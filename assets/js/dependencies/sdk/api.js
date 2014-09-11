@@ -72,20 +72,19 @@ function( $http,  $timeout, $q, chompchomp_endpoints) {
     // Return the promise
     return deferred.promise;
 
-    // Set up the promise which wraps an HTTP request
+    // Set up the promise which wraps a socket request
     function setupPromise() {
-      // Create the HTTP request
-      var _promise = $http(request);
-      // Default HTTP error catching
-      // _promise.catch(throwAnAPIError);
-      // Forward $http success / error to standard then() / catch()
-      // q promise methods.
-      _promise.success(function(data, status, headers, config) {
-        deferred.resolve(data, status, headers, config);
-      });
-      _promise.error(function(data, status, headers, config) {
-        deferred.reject(anAPIError(data, status, headers, config));
-      });
+
+      return io.socket.request(request.url, request.params, function(data, response, headers) {
+
+        if (response.statusCode !== 200) {
+          deferred.reject(anAPIError(data, response.statusCode, headers));
+        } else {
+          deferred.resolve(data, response.statusCode, headers);
+        }
+
+      }, request.method);
+
     }
   }
 
