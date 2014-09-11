@@ -26,8 +26,8 @@ module.exports = {
     // Get spaces that the player occupies
     var tilesToCheck, valToCheck, spaces, playerPieces;
     if (!pieces) {
-      spaces = _.find(game.board, function(tile) {return tile == '0';});
-      playerPieces = _.find(game.board, function(tile) {return tile == player;});
+      spaces = _.where(Object.keys(game.board), function(tile) {return game.board[tile] == '0';});
+      playerPieces = _.where(Object.keys(game.board), function(tile) {return game.board[tile] == player;});
     } else {
       spaces = pieces.space;
       playerPieces = pieces['player'+player];
