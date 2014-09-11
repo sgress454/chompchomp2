@@ -44,13 +44,13 @@ module.exports.bootstrap = function(cb) {
         password: 'abc123'
       }).exec(cb);
     },
-    game: ['player1', 'player2', function(cb, results) {
+    game: ['player1', 'player4', function(cb, results) {
       Game.findOrCreate({
         player1: results.player1.id,
-        player2: results.player2.id
+        player2: results.player4.id
       }, {
         player1: results.player1.id,
-        player2: results.player2.id
+        player2: results.player4.id
       }).exec(cb);
     }]
   }, cb);
