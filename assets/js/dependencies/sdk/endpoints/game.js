@@ -27,6 +27,21 @@ angular.module('chompchomp_api').config(["chompchomp_endpointsProvider",
 
           return request;
 
+        },
+
+        move: function (gameId, from, to) {
+
+          var request = {
+            url: '/game/'+gameId+'/move',
+            method: 'POST',
+            params: {
+              from: from,
+              to: to
+            }
+          };
+
+          return request;
+
         }
 
       });
