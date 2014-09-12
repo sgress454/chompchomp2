@@ -12,10 +12,17 @@ module.exports = function(req, res, next) {
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
   if (req.session.user) {
+    res.locals = res.locals || {};
+    res.locals.scope = res.locals.scope || {};
+    res.locals.scope.user = req.session.user;
     return next();
   }
 
-  // User is not allowed
-  // (default res.forbidden() behavior can be overridden in `config/403.js`)
-  return res.forbidden('You are not permitted to perform this action.');
+  if (req.wantsJSON) {
+    // User is not allowed
+    // (default res.forbidden() behavior can be overridden in `config/403.js`)
+    return res.forbidden('You are not permitted to perform this action.');
+  } else {
+    return res.redirect("/");
+  }
 };

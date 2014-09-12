@@ -37,11 +37,16 @@ module.exports.policies = {
   GameController: {
     create: ['sessionAuth'],
     join: ['sessionAuth'],
-    move: ['sessionAuth']
+    move: ['sessionAuth'],
+    play: ['sessionAuth']
   },
 
   SessionController: {
     logout: ['sessionAuth']
+  },
+
+  StaticController: {
+    dashboard: ['sessionAuth']
   }
 
 };

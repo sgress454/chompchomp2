@@ -1,5 +1,81 @@
-Hello {{chomp.user.firstName}}!
+<h1>Hello {{chomp.user.firstName}}!</h1>
+<a href="/logout">Log out</a>
 
-<div ng-controller="GameCtrl" ng-init="gameId=1">
-  <div ng-include src="'/templates/game.html'"></div>
+<div ng-controller="DashboardCtrl">
+
+  <button class="new-game" ng-click="newGame()">NEW GAME</button>
+
+  <div ng-if="gamesInProgress.length">
+    <h3>Games you&rsquo;re playing</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Player 1</th>
+          <th>Player 2</th>
+          <th>Started</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="game in gamesInProgress">
+          <td>{{game.player1.id == chomp.user.id ? 'You' : (game.player1.firstName + ' ' + game.player1.lastName)}}</td>
+          <td>{{game.player2.id == chomp.user.id ? 'You' : (game.player2.firstName + ' ' + game.player2.lastName)}}</td>
+          <td>{{game.createdAt | date:'short'}}</td>
+          <td><button ng-click="playGame(game.id)">PLAY</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-if="gamesJoinable.length">
+    <h3>Games waiting to start</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Player 1</th>
+          <th>Player 2</th>
+          <th>Started</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="game in gamesJoinable">
+          <td>{{(game.player1.id == chomp.user.id || game.player1 == chomp.user.id) ? 'You' : (game.player1.firstName + ' ' + game.player1.lastName)}}</td>
+          <td>{{game.player2 != null ? (game.player2.firstName + ' ' + game.player2.lastName) : '---'}}</td>
+          <td>{{game.createdAt | date:'short'}}</td>
+          <td>
+            <button data-id="{{game.id}}" ng-if="game.player2 != null" class="play" ng-click="playGame(game.id)">START</a>
+            <button data-id="{{game.id}}" ng-if="game.player1.id == chomp.user.id && game.player2 == null" class="delete">DELETE</a>
+            <button data-id="{{game.id}}" ng-if="game.player1.id != chomp.user.id && game.player2 == null" class="join" ng-click="joinGame(game.id)">JOIN</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div ng-if="gamesPlayed.length">
+    <h3>Games you&rsquo;ve played</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Player 1</th>
+          <th>Player 2</th>
+          <th>Started</th>
+          <th>Ended</th>
+          <th>Winner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="game in gamesPlayed">
+          <td>{{game.player1.id == chomp.user.id ? 'You' : (game.player1.firstName + ' ' + game.player1.lastName)}}</td>
+          <td>{{game.player2.id == chomp.user.id ? 'You' : (game.player2.firstName + ' ' + game.player2.lastName)}}</td>
+          <td>{{game.createdAt | date:'short'}}</td>
+          <td>{{game.endedAt | date:'short'}}</td>
+          <td>{{game['player'+game.winner].firstName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
 </div>

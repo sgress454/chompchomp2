@@ -58,7 +58,7 @@ describe('GameController.join()', function () {
         Game.create({
           player1: player1.id,
           public: false,
-          invitee: player2.id
+          invitee: player2.email
         }).exec(function(err, _game) {
           privateGame = _game;
           return cb(err);

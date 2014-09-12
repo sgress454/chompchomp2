@@ -29,6 +29,42 @@ angular.module('chompchomp_api').config(["chompchomp_endpointsProvider",
 
         },
 
+        joinGame: function (gameId) {
+
+          var request = {
+            url: '/game/'+gameId+'/join',
+            method: 'PUT'
+          };
+
+          return request;
+
+        },
+
+        findGames: function() {
+
+          var request = {
+            url: '/game',
+            method: 'GET'
+          };
+
+          return request;
+
+        },
+
+        newGame: function(player1) {
+
+          var request = {
+            url: '/game',
+            method: 'POST',
+            params: {
+              player1: player1
+            }
+          };
+
+          return request;
+
+        },
+
         move: function (gameId, from, to) {
 
           var request = {

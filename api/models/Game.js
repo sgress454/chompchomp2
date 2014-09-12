@@ -15,7 +15,8 @@ module.exports = {
     },
 
     player2: {
-      model: "user"
+      model: "user",
+      defaultsTo: null
     },
 
     boardSize: {
@@ -53,7 +54,12 @@ module.exports = {
     },
 
     invitee: {
-      model: "user"
+      type: "string",
+      defaultsTo: null
+    },
+
+    endedAt: {
+      type: "date"
     }
 
   },

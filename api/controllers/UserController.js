@@ -15,6 +15,21 @@ var hat = require('hat').rack();
 
 module.exports = {
 
+  signup: function(req, res) {
+
+    var data = req.params.all();
+    User.create(data).exec(function(err, user) {
+      if (err) {return res.negotiate(err);}
+      req.session.user = user.toJSON();
+      if (!req.wantsJSON) {
+        return res.redirect("/dashboard");
+      } else {
+        return res.ok(user);
+      }
+    });
+
+  },
+
   /**
    * Update the logged-in user
    *

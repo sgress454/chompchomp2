@@ -1,12 +1,12 @@
-angular.module('chompchomp').controller('HomepageCtrl', [
+angular.module('chompchomp').controller('LoginCtrl', [
 
   '$rootScope',
   '$scope',
+  '$element',
   'api',
 
-  function($rootScope, $scope, $api) {
-
-    $('.submit').click(function(e) {
+  function($rootScope, $scope, $element, $api) {
+    $($element).find('.submit').click(function(e) {
       e.preventDefault();
       var email = $('[name=email]').val();
       var password = $('[name=password]').val();

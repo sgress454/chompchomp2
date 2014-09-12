@@ -25,7 +25,7 @@ module.exports.routes = {
   '/': {view: 'homepage'},
   '/dashboard': 'StaticController.dashboard',
 
-  'POST /me/signup': 'UserController.create',
+  'POST /me/signup': 'UserController.signup',
 
   //////////////////////////////////////////////////////////////////////
   // User Management
@@ -59,6 +59,7 @@ module.exports.routes = {
   // Game play
   //////////////////////////////////////////////////////////////////////
 
+  'GET /game/:id/play': 'GameController.play',
   'POST /game/:id/move': 'GameController.move'
 
   // If a request to a URL doesn't match any of the custom routes above,

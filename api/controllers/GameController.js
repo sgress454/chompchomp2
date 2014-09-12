@@ -12,13 +12,16 @@ module.exports = {
 
     var data = _.pick(req.params.all(), ['public', 'boardSize', 'rules', 'invitee']);
 
-    if (!data.boardSize || isNaN(data.boardSize) || data.boardSize < 7) {
+    if (data.boardSize && (isNaN(data.boardSize) || data.boardSize < 7)) {
       return res.badRequest('E_BAD_BOARDSIZE');
     }
 
     data.player1 = req.session.user.id;
 
     Game.create(data, function(err, game) {
+      game.player1 = req.session.user;
+      Game.subscribe(req, game);
+      Game.publishCreate(game);
       if (err) {return res.negotiate(err);}
       return res.json(game);
     });
@@ -41,16 +44,59 @@ module.exports = {
       }
 
       // If the game is private and the user isn't invited, send a 403
-      if (!game.public && game.invitee !== req.session.user.id) {
+      if (!game.public && game.invitee !== req.session.user.email) {
         return res.forbidden();
       }
 
+      Game.subscribe(req, game);
+
       // Otherwise update the game and return OK
       Game.update({id: id}, {player2: req.session.user.id}).exec(function(err) {
+        Game.publishUpdate(id, {player2: req.session.user});
         if (err) {return res.negotiate(err);}
         return res.ok();
       });
 
+    });
+
+  },
+
+  play: function(req, res) {
+    return res.view("game");
+  },
+
+  find: function (req, res) {
+    var user = req.session.user;
+
+    async.auto({
+      gamesInProgress: function(cb) {
+        Game.find({
+          winner: 0,
+          or: [{player1: user.id, player2: {'!': null}}, {player2: user.id, player1: {'!': null}}]
+        }).populate('player1').populate('player2').exec(cb);
+      },
+      gamesJoinable: function(cb) {
+        Game.find({
+          player2: null,
+          invitee: [null, user.email]
+        }).populate('player1').populate('player2').exec(cb);
+      },
+      gamesPlayed: function(cb) {
+        Game.find({
+          winner: {'!': 0},
+          or: [{player1: user.id}, {player2: user.id}]
+        }).populate('player1').populate('player2').exec(cb);
+      }
+    }, function done(err, results) {
+      if (err) {return res.serverError(err);}
+      Game.subscribe(req, results.gamesJoinable);
+      Game.subscribe(req, results.gamesInProgress);
+      Game.watch(req);
+      return res.json({
+        gamesInProgress: results.gamesInProgress,
+        gamesJoinable: results.gamesJoinable,
+        gamesPlayed: results.gamesPlayed
+      });
     });
 
   },
@@ -81,13 +127,23 @@ module.exports = {
                     var winner = result.winner;
                     var turn = result.turn;
                     var otherPlayer = playerId == 1 ? 2 : 1;
-                    Game.update({id: id}, {
+                    var update = {
                       turn: turn,
                       board: board,
                       winner: winner
-                    }).exec(function(err) {
+                    };
+                    var move = result;
+                    move.from = req.param('from');
+                    move.to = req.param('to');
+                    move.lastTurn = game.turn;
+
+                    if (winner) {update.endedAt = new Date();}
+                    Game.update({id: id}, update).exec(function(err) {
                       if (err) {return res.negotiate(err);}
-                      Game.message(id, _.extend({action: "move"}, result), req);
+                      Game.message(id, _.extend({action: "move"}, move));
+                      if (update.winner) {
+                        Game.publishUpdate(id, {winner: winner, endedAt: update.endedAt});
+                      }
                       return res.ok(result);
                     });
                   }

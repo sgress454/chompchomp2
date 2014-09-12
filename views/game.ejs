@@ -1,0 +1,5 @@
+Hello {{chomp.user.firstName}}!
+
+<div ng-controller="GameCtrl" ng-init="gameId=<%=req.param('id')%>">
+  <div ng-include src="'/templates/game.html'"></div>
+</div>
