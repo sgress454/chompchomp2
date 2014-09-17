@@ -50,7 +50,8 @@ module.exports.bootstrap = function(cb) {
         player2: results.player4.id
       }, {
         player1: results.player1.id,
-        player2: results.player4.id
+        player2: results.player4.id,
+        boardSize: 5
       }).exec(cb);
     }]
   }, cb);

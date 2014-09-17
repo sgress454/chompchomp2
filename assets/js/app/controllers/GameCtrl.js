@@ -58,9 +58,9 @@ angular.module('chompchomp').controller('GameCtrl', [
     });
 
 
-    $scope.replayLastMove = function() {
+    $scope.replayLastMove = function(fromClick) {
       $scope.board = $scope.previousBoard;
-      $scope.$apply();
+      if (!fromClick){$scope.$apply();}
 
       setTimeout(function(){
         machines['calc-offset'].configure({
@@ -99,6 +99,12 @@ angular.module('chompchomp').controller('GameCtrl', [
                 $q.all(capturePromises).then(function() {
                   tile.css('zIndex', 1);
                   $('.clone').remove();
+                  $('.piece').css('-webkit-transform', '');
+                  $('.piece').css('-ms-transform', '');
+                  $('.piece').css('-mos-transform', '');
+                  $('.piece').css('-o-transform', '');
+                  $('.piece').css('-transform', '');
+                  $('.piece').css('opacity', '1');
                   $scope.board = $scope.currentBoard;
                 });
               } else {
@@ -107,24 +113,6 @@ angular.module('chompchomp').controller('GameCtrl', [
                 $scope.$apply();
               }
             });
-
-            // var el = $($element);
-            // var tile = el.find('[data-tile='+$scope.lastMove[0]+']');
-            // tile.css('zIndex',100);
-            // var piece = tile.find('.piece');
-            // var clone = createPiece($scope.turn == 1 ? 2 : 1).appendTo(piece.parent());
-            // clone.css('zIndex', 100);
-            // if (offset.jump) {
-            //   piece.remove();
-            // }
-            // setTimeout(function(){
-            //   move(clone[0]).to(offset.x, offset.y).end(function(){
-            //     clone.remove();
-            //     $scope.board = $scope.currentBoard;
-            //     $scope.$apply();
-            //     tile.css('zIndex',1);
-            //   });
-            // });
           }
         });
       }, 500);
@@ -174,11 +162,10 @@ angular.module('chompchomp').controller('GameCtrl', [
       var clone = createPiece(player).appendTo(piece.parent());
       clone.css('zIndex', 100);
       if (jump) {
-        piece.remove();
+        piece.removeClass('player'+player);
       }
       var forceLayout = clone[0].clientHeight;
       move(clone[0]).to(x, y).end(function(){
-        tile.css('zIndex',1);
         cb();
       });
     }
@@ -186,12 +173,8 @@ angular.module('chompchomp').controller('GameCtrl', [
     function chompPiece(tileNum, cb) {
       var el = $($element);
       var tile = el.find('[data-tile='+tileNum+']');
-      tile.css('zIndex',100);
       var piece = tile.find('.piece');
-      move(piece[0]).scale(0.1).set('opacity',0).end(function(){
-        piece.remove();
-        cb();
-      });
+      move(piece[0]).scale(0.1).set('opacity',0).end(cb);
     }
 
     function createPiece(player) {

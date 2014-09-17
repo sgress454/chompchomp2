@@ -1,5 +1,5 @@
 Hello {{chomp.user.firstName}}!
-
 <div ng-controller="GameCtrl" ng-init="gameId=<%=req.param('id')%>">
+  <button ng-click="replayLastMove(true)">Replay</button>
   <div ng-include src="'/templates/game.html'"></div>
 </div>
