@@ -123,6 +123,7 @@ module.exports = {
                .exec({
                   invalid: res.badRequest,
                   valid: function(result) {
+                    console.log("RESULT OF VALIDATE MOVE", result);
                     var board = result.board;
                     var winner = result.winner;
                     var turn = result.turn;

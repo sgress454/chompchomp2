@@ -1,18 +1,18 @@
 module.exports = {
   inputs: {
     game: {
-      type: 'Game'
+      typeclass: 'dictionary'
     },
     player: {
-      type: 'integer'
+      example: 1
     },
     from: {
-      type: 'integer'
+      example: 1
     }
   },
   exits: {
     success: {
-      type: 'array'
+      example: [1]
     }
   },
   fn: function($i, $x) {

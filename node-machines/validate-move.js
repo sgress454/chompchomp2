@@ -1,23 +1,30 @@
 module.exports = {
   inputs: {
     game: {
-      type: 'Game'
+      typeclass: 'dictionary'
     },
     playerId: {
-      type: 'integer'
+      example: 1
     },
     to: {
-      type: 'integer'
+      example: 1
     },
     from: {
-      type: 'integer'
+      example: 1
     }
   },
   exits: {
     valid: {
-      type: 'array'
+      example: {
+        board: [1],
+        captured: [1],
+        winner: 1,
+        turn: 1
+      }
     },
-    invalid: false
+    invalid: {
+      void: true
+    }
   },
   fn: function($i, $x) {
 

@@ -75,7 +75,7 @@ function( $http,  $timeout, $q, chompchomp_endpoints) {
     // Set up the promise which wraps a socket request
     function setupPromise() {
 
-      return io.socket.request(request.url, request.params, function(data, response, headers) {
+      return io.socket.request({url: request.url, params: request.params, method: request.method}, function(data, response, headers) {
 
         if (response.statusCode !== 200) {
           deferred.reject(anAPIError(data, response.statusCode, headers));
@@ -83,7 +83,7 @@ function( $http,  $timeout, $q, chompchomp_endpoints) {
           deferred.resolve(data, response.statusCode, headers);
         }
 
-      }, request.method);
+      });
 
     }
   }
